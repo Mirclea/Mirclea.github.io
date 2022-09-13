@@ -11,10 +11,16 @@
         <content type="html"><![CDATA[<blockquote><p>字符串反转代码</p></blockquote><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">reverseTestOne</span><span class="params">(String s)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">StringBuffer</span>(s).reverse().toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
       
       
+      <categories>
+          
+          <category> java </category>
+          
+      </categories>
+      
       
         <tags>
             
-            <tag> JAVA </tag>
+            <tag> leetcode </tag>
             
         </tags>
       
@@ -29,6 +35,12 @@
       
         <content type="html"><![CDATA[<h1 id="LeetCode-—-04"><a href="#LeetCode-—-04" class="headerlink" title="LeetCode —- 04"></a>LeetCode —- 04</h1><blockquote><p>给定两个大小分别为 m 和 n 的正序（从小到大）数组 nums1 和 nums2。请你找出并返回这两个正序数组的 中位数 。算法的时间复杂度应该为 O(log (m+n)) 。</p></blockquote><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">double</span> <span class="title function_">findMedianSortedArrays</span><span class="params">(<span class="type">int</span>[] nums1, <span class="type">int</span>[] nums2)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums1.length + nums2.length;</span><br><span class="line">        <span class="keyword">if</span> (n % <span class="number">2</span> == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">left</span> <span class="operator">=</span> find(nums1, <span class="number">0</span>, nums2, <span class="number">0</span>, n / <span class="number">2</span>);</span><br><span class="line">            <span class="type">int</span> <span class="variable">right</span> <span class="operator">=</span> find(nums1, <span class="number">0</span>, nums2, <span class="number">0</span>, n / <span class="number">2</span> + <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">return</span> (<span class="type">double</span>) (left + right) / <span class="number">2</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> (<span class="type">double</span>) find(nums1, <span class="number">0</span>, nums2, <span class="number">0</span>, n / <span class="number">2</span> + <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">find</span><span class="params">(<span class="type">int</span>[] num1, <span class="type">int</span> i, <span class="type">int</span>[] num2, <span class="type">int</span> j, <span class="type">int</span> k)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (num1.length - i &gt; num2.length - j) &#123;</span><br><span class="line">            <span class="keyword">return</span> find(num2, j, num1, i, k);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (num1.length == i) &#123;</span><br><span class="line">            <span class="keyword">return</span> num2[j + k - <span class="number">1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (k == <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> min(num1[i], num2[j]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span> <span class="variable">idx1</span> <span class="operator">=</span> min(num1.length, i + k / <span class="number">2</span>);</span><br><span class="line">        <span class="type">int</span> <span class="variable">idx2</span> <span class="operator">=</span> j + k - k / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span> (num1[idx1 - <span class="number">1</span>] &lt; num2[idx2 - <span class="number">1</span>]) &#123;</span><br><span class="line">            <span class="keyword">return</span> find(num1, idx1, num2, j, k - (idx1 - i));</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> find(num1, i, num2, idx2, k - (idx2 - j));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>代码如上；</p><p>思路主要是利用了二分查找的思想，对于两个数组的总长度 l=l1+l2 奇偶的处理是不同的，这个题目实际上是求连个有序数组的第k大小的数。利用k=l/2(初始值)在每个数组中初始值都有设为i=k/2;j=k-k/2对比大小比较小的一部分明显是不合适的可以直接从数组中删除在更新新的k值完成递归</p>]]></content>
       
+      
+      <categories>
+          
+          <category> java </category>
+          
+      </categories>
       
       
         <tags>
@@ -49,6 +61,18 @@
         <content type="html"><![CDATA[]]></content>
       
       
+      <categories>
+          
+          <category> python </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> openGL </tag>
+            
+        </tags>
       
     </entry>
     
@@ -62,6 +86,18 @@
         <content type="html"><![CDATA[<p><img src="https://w.wallhaven.cc/full/m9/wallhaven-m98zg9.jpg" alt="图片名字koko"></p>]]></content>
       
       
+      <categories>
+          
+          <category> learnHexo </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> blog </tag>
+            
+        </tags>
       
     </entry>
     
@@ -75,6 +111,18 @@
         <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
       
       
+      <categories>
+          
+          <category> learnHexo </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> blog </tag>
+            
+        </tags>
       
     </entry>
     
