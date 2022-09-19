@@ -1,0 +1,262 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>OpenCV(二) | Mirclea's blog</title><meta name="keywords" content="openCV"><meta name="author" content="Mirclea,1240619097@qq.com"><meta name="copyright" content="Mirclea"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="这篇文章主要讲解了openCV对图像的平滑去噪的处理基础  滤波操作卷积操作，通过像素卷积核对其核内的数值进行相关的数值变换操作  这里是通过一定的规则，对于一组卷积核内的数值进行变换进行滤波 原始数据：  这张图片好像不是带杂音的图像，读者可以自己去找一找一张带杂讯的图片  均值滤波openCV中可以使用blur函数对数据进行均值滤波 1blur &#x3D; cv2.blur(img, (3, 3))">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenCV(二)">
+<meta property="og:url" content="https://mircela.github.io/2022/09/19/OpenCV2/index.html">
+<meta property="og:site_name" content="Mirclea&#39;s blog">
+<meta property="og:description" content="这篇文章主要讲解了openCV对图像的平滑去噪的处理基础  滤波操作卷积操作，通过像素卷积核对其核内的数值进行相关的数值变换操作  这里是通过一定的规则，对于一组卷积核内的数值进行变换进行滤波 原始数据：  这张图片好像不是带杂音的图像，读者可以自己去找一找一张带杂讯的图片  均值滤波openCV中可以使用blur函数对数据进行均值滤波 1blur &#x3D; cv2.blur(img, (3, 3))">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mirclea.oss-cn-shenzhen.aliyuncs.com/openCV.png">
+<meta property="article:published_time" content="2022-09-19T07:21:48.000Z">
+<meta property="article:modified_time" content="2022-09-19T11:50:50.848Z">
+<meta property="article:author" content="Mirclea">
+<meta property="article:tag" content="openCV">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mirclea.oss-cn-shenzhen.aliyuncs.com/openCV.png"><link rel="shortcut icon" href="https://mirclea.oss-cn-shenzhen.aliyuncs.com/logo.png"><link rel="canonical" href="https://mircela.github.io/2022/09/19/OpenCV2/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isAnchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'OpenCV(二)',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-09-19 19:50:50'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.2.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/R.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">8</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">5</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 链接</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://mirclea.oss-cn-shenzhen.aliyuncs.com/openCV.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Mirclea's blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 链接</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">OpenCV(二)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-09-19T07:21:48.000Z" title="发表于 2022-09-19 15:21:48">2022-09-19</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-09-19T11:50:50.848Z" title="更新于 2022-09-19 19:50:50">2022-09-19</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/python/">python</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="OpenCV(二)"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><blockquote>
+<p>这篇文章主要讲解了openCV对图像的平滑去噪的处理基础</p>
+</blockquote>
+<h2 id="滤波操作"><a href="#滤波操作" class="headerlink" title="滤波操作"></a>滤波操作</h2><p>卷积操作，通过像素卷积核对其核内的数值进行相关的数值变换操作</p>
+<p><img src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/image-20220919162408220.png" alt="滤波卷积核展示"></p>
+<p>这里是通过一定的<strong><em>规则</em></strong>，对于一组卷积核内的数值进行变换进行滤波</p>
+<p>原始数据：<img src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/image-20220919161920805.png" alt="初始数据图片"></p>
+<blockquote>
+<p>这张图片好像不是带杂音的图像，读者可以自己去找一找一张带杂讯的图片</p>
+</blockquote>
+<h3 id="均值滤波"><a href="#均值滤波" class="headerlink" title="均值滤波"></a>均值滤波</h3><p>openCV中可以使用<code>blur</code>函数对数据进行均值滤波</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">blur = cv2.blur(img, (<span class="number">3</span>, <span class="number">3</span>))</span><br></pre></td></tr></table></figure>
+<p><code>cv2.blur(image,kernel_size)</code>的两个参数<code>image</code>代表要处理的文件，<code>kernel_size</code>代表在滤波过程中使用的卷积核大小(最好使用奇数大小)</p>
+<p>均值滤波实际上是对于卷积核内的数值相加再取<strong>算数均值</strong>填入卷积核最中间的格子中</p>
+<h3 id="方框滤波"><a href="#方框滤波" class="headerlink" title="方框滤波"></a>方框滤波</h3><p>和均值率波的计算过程是一样的，不过可以添加<strong>正则化处理</strong>和大小越界</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">box = cv2.boxFilter(img, -<span class="number">1</span>, (<span class="number">3</span>, <span class="number">3</span>), normalize=<span class="literal">True</span>) <span class="comment"># 第二个参数 为颜色通道统一，填入-1即可</span></span><br></pre></td></tr></table></figure>
+<p>如果不加<code>normalize=True</code>或者设置<code>normalize=False</code>那么对于方框滤波就不会取均值而是取和，很容故意发生越界现象，比如下图：</p>
+<p><img src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/image-20220919164253164.png" alt="不加正则化后的方框滤波处理"></p>
+<h3 id="高斯滤波"><a href="#高斯滤波" class="headerlink" title="高斯滤波"></a>高斯滤波</h3><p>可理解为根据离卷积核中间的距离可以判断远近，通过高斯概率分布赋予对应方格权值，在进行计算<strong>加权均值</strong>填入卷积核中间的格子中</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gaussian = cv2.GaussianBlur(img, (<span class="number">5</span>, <span class="number">5</span>), <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>最后的一个参数代表是正态分布的标准差为1</p>
+</blockquote>
+<h3 id="中值滤波"><a href="#中值滤波" class="headerlink" title="中值滤波"></a>中值滤波</h3><blockquote>
+<p>对中间值取kernel中的值的中位数替换</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">median = cv2.medianBlur(img, <span class="number">5</span>)  <span class="comment">#第二个参数为kernel_size,这个5代表(5,5)</span></span><br></pre></td></tr></table></figure>
+<h4 id="tip（图片拼接显示）"><a href="#tip（图片拼接显示）" class="headerlink" title="tip（图片拼接显示）"></a>tip（图片拼接显示）</h4><p>利用<code>np.hstack()</code>可以实现多组图像的水平拼接显示，而利用<code>np.vstack()</code>可以实现垂直拼接实现</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">figure_splicing</span>(<span class="params">images</span>):</span><br><span class="line">    res = np.hstack(images)	<span class="comment"># res = np.vstack(images)</span></span><br><span class="line">    <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">res = utils.figure_splicing((img, blur, gaussian, median))</span><br><span class="line">utils.show_image(<span class="string">&#x27;r&#x27;</span>, res)</span><br></pre></td></tr></table></figure>
+<p><img src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/image-20220919171009056.png" alt="对比结果"></p>
+<blockquote>
+<p>四个图像依次是：原图、均值滤波、高斯滤波、中值滤波</p>
+</blockquote>
+<h2 id="过滤操作"><a href="#过滤操作" class="headerlink" title="过滤操作"></a>过滤操作</h2><h3 id="腐蚀操作"><a href="#腐蚀操作" class="headerlink" title="腐蚀操作"></a>腐蚀操作</h3><p>注意 ： <strong>腐蚀操作的对象通常是二值图</strong></p>
+<p>类似与上面的滤波操作，腐蚀操作也有一个腐蚀核，对于一个腐蚀核，如果腐蚀核中有黑又白，那么将核中将白点全部涂黑，黑点不变（从图像开始检索，到检索玩这张图为一个迭代）</p>
+<p>读入二值图像 利用<code>ret,dst=cv2.threshold(src,thresh,maxval,type)</code> (上一章有讲到)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">img = cv2.imread(<span class="string">&#x27;../img/fs.png&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这个项目没用的原因是因为图片本身就是二值图，不需要再根据函数得到二值图</p>
+</blockquote>
+<p>腐蚀操作的代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kernel = np.ones((<span class="number">5</span>, <span class="number">5</span>), np.uint8)</span><br><span class="line">erosion = cv2.erode(img, kernel, iterations=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p>对于腐蚀操作<code>cv2.erode()</code>的三个参数，第一个略过：</p>
+<ul>
+<li>第二个：kernel，腐蚀核的大小</li>
+<li>第三个：iterations，迭代次数，迭代此时对于结果影像如下图</li>
+</ul>
+<p><img src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/image-20220919173712644.png" alt="迭代次数对于结果的影响"></p>
+<p>对应的代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">erosion1 = cv2.erode(img, kernel, iterations=<span class="number">1</span>)</span><br><span class="line">erosion2 = cv2.erode(img, kernel, iterations=<span class="number">2</span>)</span><br><span class="line">erosion3 = cv2.erode(img, kernel, iterations=<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">res = utils.figure_splicing((img, erosion1, erosion2, erosion3))</span><br><span class="line">utils.show_image(<span class="string">&quot;对比&quot;</span>, res)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>上述四图依次是原图、迭代1次、迭代2次、迭代3次的结果 ，其中kernel 保持为（5，5）</p>
+<p>腐蚀核大小对于结果的影响这里就不在给出，读者若有兴趣可以自行尝试，或者取我的GitHub上查看源码</p>
+</blockquote>
+<h3 id="膨胀操作"><a href="#膨胀操作" class="headerlink" title="膨胀操作"></a>膨胀操作</h3><p>膨胀操作是腐蚀操作的逆操作，膨胀核中只要存在白点就要将核中黑点染白，其他于腐蚀操作类似</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kernel = np.ones((<span class="number">5</span>, <span class="number">5</span>), np.uint8)</span><br><span class="line">dilate = cv2.dilate(img, kernel, iterations=<span class="number">10</span>)</span><br></pre></td></tr></table></figure>
+<p>膨胀操作的基本代码，参数于腐蚀操作的参数一样这里就不再介绍</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">j0 = img = cv2.imread(<span class="string">&#x27;../img/fs.png&#x27;</span>)</span><br><span class="line">kernel1 = np.ones((<span class="number">3</span>, <span class="number">3</span>), np.uint8)</span><br><span class="line">j1 = cv2.erode(j0, kernel1, iterations=<span class="number">10</span>)</span><br><span class="line">j2 = cv2.dilate(j1, kernel1, iterations=<span class="number">10</span>)</span><br><span class="line">res2 = utils.figure_splicing((j0, j1, j2))</span><br><span class="line">utils.show_image(<span class="string">&quot;process&quot;</span>, res2)</span><br></pre></td></tr></table></figure>
+<p>上面的代码这是腐蚀与膨胀的结合产生的结果的代码，下图是最终呈现的效果</p>
+<p><img src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/image-20220919183610396.png" alt="image-20220919183610396"></p>
+<h3 id="开运算和闭运算"><a href="#开运算和闭运算" class="headerlink" title="开运算和闭运算"></a>开运算和闭运算</h3><ul>
+<li>开运算：先腐蚀，再膨胀（结果见上一节的图像）</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">j0 = img = cv2.imread(<span class="string">&#x27;../img/fs.png&#x27;</span>)</span><br><span class="line">kernel1 = np.ones((<span class="number">3</span>, <span class="number">3</span>), np.uint8)</span><br><span class="line">j1 = cv2.erode(j0, kernel1, iterations=<span class="number">10</span>)</span><br><span class="line">j2 = cv2.dilate(j1, kernel1, iterations=<span class="number">10</span>)</span><br><span class="line">res2 = utils.figure_splicing((j0, j1, j2))</span><br><span class="line">utils.show_image(<span class="string">&quot;process&quot;</span>, res2)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>闭运算：先膨胀，再腐蚀</li>
+</ul>
+<p>结果如下：<img src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/image-20220919185435402.png" alt="image-20220919185435402"></p>
+<p>代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">kernel2 = np.ones((<span class="number">3</span>, <span class="number">3</span>), np.uint8)</span><br><span class="line">ji1 = cv2.dilate(j0, kernel2, iterations=<span class="number">10</span>)</span><br><span class="line">ji2 = cv2.erode(ji1, kernel2, iterations=<span class="number">10</span>)</span><br><span class="line">res3 = utils.figure_splicing((j0, ji1, ji2))</span><br><span class="line">utils.show_image(<span class="string">&quot;process&quot;</span>, res3)</span><br></pre></td></tr></table></figure>
+<h3 id="梯度计算"><a href="#梯度计算" class="headerlink" title="梯度计算"></a>梯度计算</h3><p>梯度 = 膨胀 - 腐蚀</p>
+<p>代码描述</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gradient = cv2.morphologyEx(pie, cv2.MORPH_GRADIENT, kernel)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>pie : 传入图片</li>
+<li>第二个参数为计算模式，这里是计算梯度</li>
+<li>传入的核大小</li>
+</ul>
+<blockquote>
+<p>我们注意这个函数是对于操作模式的封装其原因为<code>cv2.morphologyEx(src, op, kernel)</code>,作用是对于多种形态学的运算，三个参数分别是</p>
+<ul>
+<li>src传入的图片</li>
+<li>op进行变化的方式</li>
+<li>kernel表示方框的大小</li>
+</ul>
+<p>op = cv2.MORPH_OPEN 进行开运算，指的是先进行腐蚀操作，再进行膨胀操作</p>
+<p>op = cv2.MORPH_CLOSE 进行闭运算， 指的是先进行膨胀操作，再进行腐蚀操作</p>
+<p>op的值可以点击<a target="_blank" rel="noopener" href="https://www.opencv.org.cn/opencvdoc/2.3.2/html/doc/tutorials/imgproc/opening_closing_hats/opening_closing_hats.html">这里</a>了解更多</p>
+</blockquote>
+<h3 id="礼帽和黑帽"><a href="#礼帽和黑帽" class="headerlink" title="礼帽和黑帽"></a>礼帽和黑帽</h3><ul>
+<li>礼帽=原始输入 - 开运算结果</li>
+<li>黑帽=闭运算结果 - 原始输入</li>
+</ul>
+<p>对应<code>cv2.morphologyEx(src, op, kernel)</code>中的op值分别是：</p>
+<ul>
+<li>礼帽<code>op = cv2.MORPH_TOPHAT</code></li>
+<li>黑帽<code>op= cv2.MORPH_BLACKHAT</code></li>
+</ul>
+<p>对于上述描述的形态学参数的计算我放在了一段代码中，如下段代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">pie = cv2.imread(<span class="string">&#x27;../img/fs.png&#x27;</span>)</span><br><span class="line">pie = cv2.resize(pie, (<span class="number">200</span>, <span class="number">200</span>))</span><br><span class="line">kernel = np.ones((<span class="number">7</span>, <span class="number">7</span>), np.uint8)</span><br><span class="line"></span><br><span class="line">openNum = cv2.morphologyEx(pie, cv2.MORPH_OPEN, kernel)  <span class="comment"># 开运算</span></span><br><span class="line">closeNum = cv2.morphologyEx(pie, cv2.MORPH_CLOSE, kernel)  <span class="comment"># 闭运算</span></span><br><span class="line">gradient = cv2.morphologyEx(pie, cv2.MORPH_GRADIENT, kernel)  <span class="comment"># 梯度</span></span><br><span class="line">top = cv2.morphologyEx(pie, cv2.MORPH_TOPHAT, kernel)  <span class="comment"># 礼帽</span></span><br><span class="line">black = cv2.morphologyEx(pie, cv2.MORPH_BLACKHAT, kernel)  <span class="comment"># 黑帽</span></span><br><span class="line"></span><br><span class="line">res = utils.figure_splicing((pie, openNum, closeNum, gradient, top, black))</span><br><span class="line">utils.show_image(<span class="string">&#x27;images result&#x27;</span>, res)</span><br></pre></td></tr></table></figure></p>
+<p>其运算的结果如下：</p>
+<p><img src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/image-20220919193723637.png" alt="结果对比"></p>
+<blockquote>
+<p>五张图片依次是，原图、开运算结果、闭云算、梯度、礼帽、黑帽</p>
+</blockquote>
+<p>本篇文章中的代码我已经传入我的<a target="_blank" rel="noopener" href="https://github.com/Mircela/LearnOpenCV.git">Github</a> ,若想查看代码请移步至我的GitHub</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://mircela.github.io">Mirclea</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://mircela.github.io/2022/09/19/OpenCV2/">https://mircela.github.io/2022/09/19/OpenCV2/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://mircela.github.io" target="_blank">Mirclea's blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/openCV/">openCV</a></div><div class="post_share"><div class="social-share" data-image="https://mirclea.oss-cn-shenzhen.aliyuncs.com/openCV.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2022/09/18/Latex/"><img class="next-cover" src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/壁纸5.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Latex入门</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2022/09/16/OpenCV1/" title="OpenCV(一)"><img class="cover" src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/openCV.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-16</div><div class="title">OpenCV(一)</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/R.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Mirclea</div><div class="author-info__description">My Blog for study</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">8</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">5</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Mircela"><i class="fab fa-github"></i><span>GitHub</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Mircela" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/1240619097@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="/www.baidu.com" target="_blank" title="BaiDu"><i class="fa-sharp fa-solid fa-link"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BB%A4%E6%B3%A2%E6%93%8D%E4%BD%9C"><span class="toc-number">1.</span> <span class="toc-text">滤波操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9D%87%E5%80%BC%E6%BB%A4%E6%B3%A2"><span class="toc-number">1.1.</span> <span class="toc-text">均值滤波</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%A1%86%E6%BB%A4%E6%B3%A2"><span class="toc-number">1.2.</span> <span class="toc-text">方框滤波</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AB%98%E6%96%AF%E6%BB%A4%E6%B3%A2"><span class="toc-number">1.3.</span> <span class="toc-text">高斯滤波</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%AD%E5%80%BC%E6%BB%A4%E6%B3%A2"><span class="toc-number">1.4.</span> <span class="toc-text">中值滤波</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#tip%EF%BC%88%E5%9B%BE%E7%89%87%E6%8B%BC%E6%8E%A5%E6%98%BE%E7%A4%BA%EF%BC%89"><span class="toc-number">1.4.1.</span> <span class="toc-text">tip（图片拼接显示）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E6%BB%A4%E6%93%8D%E4%BD%9C"><span class="toc-number">2.</span> <span class="toc-text">过滤操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%85%90%E8%9A%80%E6%93%8D%E4%BD%9C"><span class="toc-number">2.1.</span> <span class="toc-text">腐蚀操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%86%A8%E8%83%80%E6%93%8D%E4%BD%9C"><span class="toc-number">2.2.</span> <span class="toc-text">膨胀操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E8%BF%90%E7%AE%97%E5%92%8C%E9%97%AD%E8%BF%90%E7%AE%97"><span class="toc-number">2.3.</span> <span class="toc-text">开运算和闭运算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A2%AF%E5%BA%A6%E8%AE%A1%E7%AE%97"><span class="toc-number">2.4.</span> <span class="toc-text">梯度计算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A4%BC%E5%B8%BD%E5%92%8C%E9%BB%91%E5%B8%BD"><span class="toc-number">2.5.</span> <span class="toc-text">礼帽和黑帽</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/09/19/OpenCV2/" title="OpenCV(二)"><img src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/openCV.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="OpenCV(二)"/></a><div class="content"><a class="title" href="/2022/09/19/OpenCV2/" title="OpenCV(二)">OpenCV(二)</a><time datetime="2022-09-19T07:21:48.000Z" title="发表于 2022-09-19 15:21:48">2022-09-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/09/18/Latex/" title="Latex入门"><img src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/壁纸5.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Latex入门"/></a><div class="content"><a class="title" href="/2022/09/18/Latex/" title="Latex入门">Latex入门</a><time datetime="2022-09-18T06:52:38.000Z" title="发表于 2022-09-18 14:52:38">2022-09-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/09/17/openGL-config/" title="openGLVscode配置"><img src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/openGL.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="openGLVscode配置"/></a><div class="content"><a class="title" href="/2022/09/17/openGL-config/" title="openGLVscode配置">openGLVscode配置</a><time datetime="2022-09-17T07:48:28.000Z" title="发表于 2022-09-17 15:48:28">2022-09-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/09/16/OpenCV1/" title="OpenCV(一)"><img src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/openCV.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="OpenCV(一)"/></a><div class="content"><a class="title" href="/2022/09/16/OpenCV1/" title="OpenCV(一)">OpenCV(一)</a><time datetime="2022-09-16T10:52:34.000Z" title="发表于 2022-09-16 18:52:34">2022-09-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/09/12/javaString/" title="java_String_API"><img src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/java.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="java_String_API"/></a><div class="content"><a class="title" href="/2022/09/12/javaString/" title="java_String_API">java_String_API</a><time datetime="2022-09-12T08:48:31.000Z" title="发表于 2022-09-12 16:48:31">2022-09-12</time></div></div></div></div></div></div></main><footer id="footer" style="background: linear-gradient( 135deg,"><div id="footer-wrap"><div class="copyright">&copy;2022 By Mirclea</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcome to my <a href="https://mircela.github.io/">blog</a>!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
