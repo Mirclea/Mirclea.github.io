@@ -1,0 +1,353 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>几何图形 | Mirclea's blog</title><meta name="keywords" content="Computer Graphics"><meta name="author" content="Mirclea,1240619097@qq.com"><meta name="copyright" content="Mirclea"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="几何图形简介几何图形的表示隐式函数表示例如：$f(x,y,z) &#x3D; x^2+y^2+z^2-1,f(x,y,z) &#x3D; 0$ 都隐式的表示一个球面，但对于每一个$(x,y,z)$来说都是不直观的，但是对于每一个相对于球面的位置都可以很容易根据$f(x_1,y_1,z_1)$的值判断$(x_1,y_1,z_1)$在球面的内部还是外部  优点：不直观  缺点：可以很容易的确定点与面的关系   隐式函数的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="几何图形">
+<meta property="og:url" content="https://mirclea.github.io/2022/10/03/CG04/index.html">
+<meta property="og:site_name" content="Mirclea&#39;s blog">
+<meta property="og:description" content="几何图形简介几何图形的表示隐式函数表示例如：$f(x,y,z) &#x3D; x^2+y^2+z^2-1,f(x,y,z) &#x3D; 0$ 都隐式的表示一个球面，但对于每一个$(x,y,z)$来说都是不直观的，但是对于每一个相对于球面的位置都可以很容易根据$f(x_1,y_1,z_1)$的值判断$(x_1,y_1,z_1)$在球面的内部还是外部  优点：不直观  缺点：可以很容易的确定点与面的关系   隐式函数的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mirclea.oss-cn-shenzhen.aliyuncs.com/cg.jpg">
+<meta property="article:published_time" content="2022-10-03T10:16:45.000Z">
+<meta property="article:modified_time" content="2022-10-10T14:03:18.788Z">
+<meta property="article:author" content="Mirclea">
+<meta property="article:tag" content="Computer Graphics">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mirclea.oss-cn-shenzhen.aliyuncs.com/cg.jpg"><link rel="shortcut icon" href="https://mirclea.oss-cn-shenzhen.aliyuncs.com/xingxi.png"><link rel="canonical" href="https://mirclea.github.io/2022/10/03/CG04/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isAnchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '几何图形',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-10-10 22:03:18'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/font.css"><meta name="generator" content="Hexo 6.2.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/R.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">7</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 链接</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://mirclea.oss-cn-shenzhen.aliyuncs.com/cg.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Mirclea's blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 链接</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">几何图形</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-10-03T10:16:45.000Z" title="发表于 2022-10-03 18:16:45">2022-10-03</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-10-10T14:03:18.788Z" title="更新于 2022-10-10 22:03:18">2022-10-10</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="几何图形"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="几何图形简介"><a href="#几何图形简介" class="headerlink" title="几何图形简介"></a>几何图形简介</h2><h3 id="几何图形的表示"><a href="#几何图形的表示" class="headerlink" title="几何图形的表示"></a>几何图形的表示</h3><h4 id="隐式函数表示"><a href="#隐式函数表示" class="headerlink" title="隐式函数表示"></a>隐式函数表示</h4><p>例如：$f(x,y,z) = x^2+y^2+z^2-1,f(x,y,z) = 0$ 都隐式的表示一个球面，但对于每一个$(x,y,z)$来说都是不直观的，但是对于每一个相对于球面的位置都可以很容易根据$f(x_1,y_1,z_1)$的值判断$(x_1,y_1,z_1)$在球面的内部还是外部</p>
+<ul>
+<li><p>优点：不直观</p>
+</li>
+<li><p>缺点：可以很容易的确定点与面的关系</p>
+</li>
+</ul>
+<p>隐式函数的有点总结：</p>
+<ul>
+<li>描述起来比较简单</li>
+<li>某些查询很容易(对象内部，到表面的距离)</li>
+<li>适合于光线和表面的求交</li>
+<li>对于简单的形状，精确描述/无采样误差</li>
+<li>适合用来描述拓扑结构(如流体)</li>
+</ul>
+<h4 id="显示函数表示"><a href="#显示函数表示" class="headerlink" title="显示函数表示"></a>显示函数表示</h4><p>例如：$f(u,v) = ((2+\cos u)\cos v,(2+\cos u)\sin v,\sin u)$表示一个面。可以根据$(u,v)$很容易得到一个确认的$(x,y,z)$的点</p>
+<ul>
+<li>优点：可以很快的写出曲面上的任意一个点，直观</li>
+<li>缺点：不好判断空间中的任意一点与面的关系</li>
+</ul>
+<h4 id="集合思想表示（CSG）"><a href="#集合思想表示（CSG）" class="headerlink" title="集合思想表示（CSG）"></a>集合思想表示（CSG）</h4><p>通过<strong>集合的布尔运算</strong>进行运算，如下图：</p>
+<p><img src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/image-20221010152441764.png" alt="CSG集合运算1"></p>
+<p><img src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/image-20221010130154013.png" alt="CSG集合运算2"></p>
+<p>通过对于简单的几何图形进行集合运算我们可以完成对于一些复杂几何模型的组合，相比于上面的隐式和显式的数学表达式来表示几何图形，更加立体直观。</p>
+<h4 id="距离函数表示"><a href="#距离函数表示" class="headerlink" title="距离函数表示*"></a>距离函数表示*</h4><p>对于任何一个几何都不直接去描述它的表面，而去表述任何一个点到这个表面的最近距离。<strong>距离函数是指空间中任何一个点到需要表达的几何形体之间的最小距离。如果有一个点在几何形体的外面则距离是正数，如果有一个点在几何形体的里面则计算出最小距离后加一个负号。</strong>空间任何一个点都有一个距离值，把这两个物体各自的距离函数都算出来之后，把两个距离函数做一个融合，再把他恢复成原来的物体。</p>
+<h4 id="分型表示※"><a href="#分型表示※" class="headerlink" title="分型表示※"></a>分型表示※</h4><p>分形类似于递归<br>例如雪花是六边形的，放大后每一条边上还有六边形，六边形里面仍然还有六边形。</p>
+<h2 id="曲线和曲面"><a href="#曲线和曲面" class="headerlink" title="曲线和曲面"></a>曲线和曲面</h2><p>obj文件的组成：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">v:顶点信息</span><br><span class="line">vt:法向量信息</span><br><span class="line">vn:顶点向量信息</span><br><span class="line">f:面信息</span><br></pre></td></tr></table></figure>
+<h3 id="曲线"><a href="#曲线" class="headerlink" title="曲线"></a>曲线</h3><h4 id="贝塞尔曲线"><a href="#贝塞尔曲线" class="headerlink" title="贝塞尔曲线"></a>贝塞尔曲线</h4><blockquote>
+<p>贝塞尔曲线(Bezier curve)，又称贝兹曲线或贝济埃曲线，是应用于二维图形应用程序的数学曲线。一般的矢量图形软件通过它来精确画出曲线，贝兹曲线由线段与节点组成，节点是可拖动的支点，线段像可伸缩的皮筋，我们在绘图工具上看到的钢笔工具就是来做这种矢量曲线的。贝塞尔曲线是计算机图形学中相当重要的参数曲线，在一些比较成熟的位图软件中也有贝塞尔曲线工具，如PhotoShop等。</p>
+</blockquote>
+<p>贝塞尔曲线的一些特性：</p>
+<ul>
+<li>使用$n$个控制点${P_1,P_2,…,P_3}$来控制曲线的形状</li>
+<li>曲线通过起始点$P_1$和终止点$P_n$，接近但不通过中间点$P_2 \sim  P_{n-1}$</li>
+</ul>
+<p>公式理解</p>
+<p>step 1.在二维平面内选三个不同的点并依次用线段连接</p>
+<p><img src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/image-20221010211725666.png" alt="step.1"></p>
+<p>step 2.在线段$AB$和$BC$上找到$D、E$两点，使得$\frac{AD}{BD} = \frac{BE}{CE}$</p>
+<p><img src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/image-20221010211952545.png" alt="step.2"></p>
+<p>step 3.连接$DE$，并在$DE$上找到$F$点，使其满足$\frac{DF}{EF} =  \frac{AD}{BD} = \frac{BE}{CE}$</p>
+<p><img src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/image-20221010212248041.png" alt="step.3"></p>
+<p>step 4.找出符合上述条件的所有点</p>
+<p><img src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/bse.gif" alt="step.4"></p>
+<p>对于具体的公式以及对于相关的多阶的贝塞尔曲线的如下：</p>
+<script type="math/tex; mode=display">
+B(t)=\sum_{i=0}^n\left(\begin{array}{l}
+n \\
+i
+\end{array}\right) P i(1-t)^{n-i} t^i=\left(\begin{array}{l}
+n \\
+0
+\end{array}\right) P 0(1-t)^n t^0+\left(\begin{array}{l}
+n \\
+1
+\end{array}\right) P 1(1-t)^{n-1} t^1+\ldots+\left(\begin{array}{c}
+n \\
+n-1
+\end{array}\right) P n-1(1-t)^1 t^{n-1}+\left(\begin{array}{l}
+n \\
+n
+\end{array}\right) P n(1-t)^0 t^n, t \in[0,1]</script><blockquote>
+<p>类似于二项式展开的模式</p>
+</blockquote>
+<p>对于推导的过程，之后的文章中可以看到</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>曲线阶数</th>
+<th>图示</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1阶</td>
+<td><img src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/1j.gif" alt=""></td>
+</tr>
+<tr>
+<td>3阶</td>
+<td><img src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/2j.gif" alt=""></td>
+</tr>
+<tr>
+<td>4阶</td>
+<td><img src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/4j.gif" alt=""></td>
+</tr>
+<tr>
+<td>5阶</td>
+<td><img src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/5j.gif" style="zoom: 67%;" /></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="曲面"><a href="#曲面" class="headerlink" title="曲面"></a><strong>曲面</strong></h3><h4 id="贝塞尔曲面"><a href="#贝塞尔曲面" class="headerlink" title="贝塞尔曲面"></a>贝塞尔曲面</h4><p>其实在理解了贝塞尔曲线之后，贝塞尔曲面的原理也是十分容易理解的了，无非是一个从2维到3维的过渡。</p>
+<p><img src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/bs.png" style="zoom:67%;" /></p>
+<p>如果说对于曲线来说只有一个参数 $ t\in[0,1]$那么对于一个面来说，就应该有两个参数，分别设$u\in[0,1]，v\in[0,1]$，具体过程如下图所示:<br><img src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/gc.png" style="zoom:50%;" /></p>
+<p>首先规定一共4x4 = 16个控制点，其水平面位置如图中16个黑点所示(并未表示出高度，防止图形太乱)，将这16个点分成4列，图中红色圈中的为一列的具体例子。</p>
+<ul>
+<li><p>第1步 在这4个控制点之下利用第一个参数$ u$ 运用计算贝塞尔曲线的方法得到蓝色点，因为有4列，所以一共可以得到如图所示的4个蓝色点。(灰色曲线分别为每列4个点所对应的贝塞尔曲线)</p>
+</li>
+<li><p>第2步 在得到4个蓝色顶点之后，在这四个蓝色顶点的基础之下利用第二个参数 $v$便可以成功得出贝塞尔曲面上的正确一点</p>
+</li>
+<li><p>第3步 遍历所有的 $u，v$ 值就可以成功得到一个贝塞尔曲面</p>
+</li>
+</ul>
+<h2 id="几何处理"><a href="#几何处理" class="headerlink" title="几何处理"></a>几何处理</h2><h3 id="几何细分"><a href="#几何细分" class="headerlink" title="几何细分"></a>几何细分</h3><h4 id="Loop细分"><a href="#Loop细分" class="headerlink" title="Loop细分"></a>Loop细分</h4><p><em>需要三角形Mesh</em></p>
+<p>步骤：</p>
+<ol>
+<li><p>create more triangles (vertices)</p>
+<p>Split each triangle into four</p>
+<p><img src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/image-20221010215430773.png" alt="三角形细分"></p>
+</li>
+<li><p><strong>tune their positions （形状需要有改变）</strong></p>
+<p>Assign new vertex positions according to weights</p>
+<p>New / old vertices updated differently 新老点分别改变</p>
+<p><img src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/image-20221010215531593.png" alt="形状改变时权重计算" style="zoom: 80%;" /></p>
+</li>
+</ol>
+<h4 id="Catmull-Clark-细分"><a href="#Catmull-Clark-细分" class="headerlink" title="Catmull-Clark 细分"></a>Catmull-Clark 细分</h4><p>通用Mesh</p>
+<p>Non-quad face：非四边的面</p>
+<p>Extraordinary vertex (奇异点)：指(degree != 4)的点</p>
+<p>Each subdivision step:</p>
+<ol>
+<li>在每个面中添加顶点</li>
+<li>在每条边上添加中点</li>
+<li>连接所有新顶点</li>
+</ol>
+<p><img src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/image-20221010220044593.png" style="zoom:49%;" /><img src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/image-20221010220109312.png" alt="image-20221010220109312" style="zoom:49%;" /><img src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/image-20221010220200098.png" alt="image-20221010220200098" style="zoom:50%;" /></p>
+<p>奇异点在第一次细分增加[非四边形面数量]，后续不变；所有非四边形面在第一次细分都会消失</p>
+<p>Update Rules (Quad Mesh)：</p>
+<p><img src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/image-20221010220234349.png" alt="更新的规则"></p>
+<h3 id="几何简化"><a href="#几何简化" class="headerlink" title="几何简化"></a>几何简化</h3><p>目标：减少网格单元的数量，同时保持整体形状</p>
+<p>应用：移动端、远距离（LOD）</p>
+<p>几何的层次结构</p>
+<p>边缘折叠：顶点合并</p>
+<ul>
+<li>哪些边合并？如何合并？<ul>
+<li>Quadric Error Metrics（⼆次误差度量）放在二次误差之和最小的地方</li>
+</ul>
+</li>
+</ul>
+<p>通过二次误差进行简化</p>
+<ul>
+<li>以最小分数迭代折叠边缘</li>
+<li>有问题，一条边的操作会影响其它边，需要更新<ul>
+<li>数据结构：优先队列 or 堆</li>
+</ul>
+</li>
+<li>贪心算法，非全局最优</li>
+<li>可以有的放矢</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://mirclea.github.io">Mirclea</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://mirclea.github.io/2022/10/03/CG04/">https://mirclea.github.io/2022/10/03/CG04/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://mirclea.github.io" target="_blank">Mirclea's blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Computer-Graphics/">Computer Graphics</a></div><div class="post_share"><div class="social-share" data-image="https://mirclea.oss-cn-shenzhen.aliyuncs.com/cg.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2022/10/03/openCV3/"><img class="next-cover" src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/openCV.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">图像处理以及边缘检测</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2022/09/27/CG03/" title="光栅化着色"><img class="cover" src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/cg.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-27</div><div class="title">光栅化着色</div></div></a></div><div><a href="/2022/09/24/CG01/" title="图形学基础"><img class="cover" src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/cg.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-24</div><div class="title">图形学基础</div></div></a></div><div><a href="/2022/09/26/CG02/" title="光栅化理论基础"><img class="cover" src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/cg.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-26</div><div class="title">光栅化理论基础</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/R.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Mirclea</div><div class="author-info__description">My Blog for study</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">7</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Mircela"><i class="fab fa-github"></i><span>GitHub</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Mirclea" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/1240619097@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="https://www.baidu.com" target="_blank" title="BaiDu"><i class="fa-sharp fa-solid fa-link"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%A0%E4%BD%95%E5%9B%BE%E5%BD%A2%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">几何图形简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%A0%E4%BD%95%E5%9B%BE%E5%BD%A2%E7%9A%84%E8%A1%A8%E7%A4%BA"><span class="toc-number">1.1.</span> <span class="toc-text">几何图形的表示</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9A%90%E5%BC%8F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA"><span class="toc-number">1.1.1.</span> <span class="toc-text">隐式函数表示</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%98%BE%E7%A4%BA%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA"><span class="toc-number">1.1.2.</span> <span class="toc-text">显示函数表示</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9B%86%E5%90%88%E6%80%9D%E6%83%B3%E8%A1%A8%E7%A4%BA%EF%BC%88CSG%EF%BC%89"><span class="toc-number">1.1.3.</span> <span class="toc-text">集合思想表示（CSG）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%B7%9D%E7%A6%BB%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA"><span class="toc-number">1.1.4.</span> <span class="toc-text">距离函数表示*</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E5%9E%8B%E8%A1%A8%E7%A4%BA%E2%80%BB"><span class="toc-number">1.1.5.</span> <span class="toc-text">分型表示※</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B2%E7%BA%BF%E5%92%8C%E6%9B%B2%E9%9D%A2"><span class="toc-number">2.</span> <span class="toc-text">曲线和曲面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%B2%E7%BA%BF"><span class="toc-number">2.1.</span> <span class="toc-text">曲线</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%B4%9D%E5%A1%9E%E5%B0%94%E6%9B%B2%E7%BA%BF"><span class="toc-number">2.1.1.</span> <span class="toc-text">贝塞尔曲线</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%B2%E9%9D%A2"><span class="toc-number">2.2.</span> <span class="toc-text">曲面</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%B4%9D%E5%A1%9E%E5%B0%94%E6%9B%B2%E9%9D%A2"><span class="toc-number">2.2.1.</span> <span class="toc-text">贝塞尔曲面</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">几何处理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%A0%E4%BD%95%E7%BB%86%E5%88%86"><span class="toc-number">3.1.</span> <span class="toc-text">几何细分</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Loop%E7%BB%86%E5%88%86"><span class="toc-number">3.1.1.</span> <span class="toc-text">Loop细分</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Catmull-Clark-%E7%BB%86%E5%88%86"><span class="toc-number">3.1.2.</span> <span class="toc-text">Catmull-Clark 细分</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%A0%E4%BD%95%E7%AE%80%E5%8C%96"><span class="toc-number">3.2.</span> <span class="toc-text">几何简化</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/10/03/CG04/" title="几何图形"><img src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/cg.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="几何图形"/></a><div class="content"><a class="title" href="/2022/10/03/CG04/" title="几何图形">几何图形</a><time datetime="2022-10-03T10:16:45.000Z" title="发表于 2022-10-03 18:16:45">2022-10-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/10/03/openCV3/" title="图像处理以及边缘检测"><img src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/openCV.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="图像处理以及边缘检测"/></a><div class="content"><a class="title" href="/2022/10/03/openCV3/" title="图像处理以及边缘检测">图像处理以及边缘检测</a><time datetime="2022-10-03T10:05:34.000Z" title="发表于 2022-10-03 18:05:34">2022-10-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/09/27/CG03/" title="光栅化着色"><img src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/cg.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="光栅化着色"/></a><div class="content"><a class="title" href="/2022/09/27/CG03/" title="光栅化着色">光栅化着色</a><time datetime="2022-09-27T11:09:54.000Z" title="发表于 2022-09-27 19:09:54">2022-09-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/09/26/CG02/" title="光栅化理论基础"><img src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/cg.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="光栅化理论基础"/></a><div class="content"><a class="title" href="/2022/09/26/CG02/" title="光栅化理论基础">光栅化理论基础</a><time datetime="2022-09-26T03:56:51.000Z" title="发表于 2022-09-26 11:56:51">2022-09-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/09/24/CG01/" title="图形学基础"><img src="https://mirclea.oss-cn-shenzhen.aliyuncs.com/cg.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="图形学基础"/></a><div class="content"><a class="title" href="/2022/09/24/CG01/" title="图形学基础">图形学基础</a><time datetime="2022-09-24T08:44:19.000Z" title="发表于 2022-09-24 16:44:19">2022-09-24</time></div></div></div></div></div></div></main><footer id="footer" style="background: linear-gradient( 135deg,"><div id="footer-wrap"><div class="copyright">&copy;2022 By Mirclea</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcome to my <a target="_blank" rel="noopener" href="https://mircela.github.io/">blog</a>!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

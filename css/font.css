@@ -1,0 +1,14 @@
+@font-face{
+    font-family: 'FiraCode';
+    font-display: swap;
+    src: url('/font/FZZJ-ZYGDKJW-2.ttf') format("truetype");
+}
+ /* h1#site-title {
+    font-family: 'FiraCode', sans-serif;
+  } */
+/* body {
+    font-family: 'FiraCode', "Microsoft YaHei", 'FiraCode';
+} */
+p{
+  font-size: 17px;
+}
