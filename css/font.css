@@ -1,7 +1,12 @@
-@font-face{
+/*@font-face{
     font-family: 'FiraCode';
     font-display: swap;
     src: url('/font/FZZJ-ZYGDKJW-2.ttf') format("truetype");
+}*/
+@font-face{
+    font-family: 'FiraCode';
+    font-display: swap;
+    src: url('/font/bbh.otf') format("opentype");
 }
  /* h1#site-title {
     font-family: 'FiraCode', sans-serif;
